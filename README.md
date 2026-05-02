@@ -25,6 +25,8 @@ Stellar Scholar is an engineering project developed to optimize data-driven anal
 Data Analysis: Analysis of statistical models and datasets used in engineering projects.
 
 Visualization: Presentation of data through line graphs, histograms, and distribution plots.
+Project Identification Code
+Decrypted: This project was prepared for the Computer Engineering Department
 
 Modular Architecture: A flexible code structure that can be easily integrated into various projects.
 
