@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Stellar Scholar | Eğitimde Şeffaflık</title>
+    <style>
+        :root { --primary: #007bff; --success: #28a745; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 420px; transition: transform 0.3s ease; }
+        .card:hover { transform: translateY(-5px); }
+        h2 { color: #084c61; text-align: center; margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; font-size: 0.9em; margin-bottom: 25px; }
+        input { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 15px; transition: border-color 0.3s; }
+        input:focus { border-color: var(--primary); outline: none; }
+        button { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,123,255,0.3); }
+        button:active { transform: scale(0.98); }
+        .status { margin-top: 20px; text-align: center; border-radius: 8px; padding: 10px; display: none; }
+        .explorer-btn { display: inline-block; margin-top: 10px; padding: 8px 15px; background: #343a40; color: white; text-decoration: none; border-radius: 5px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🎓 Stellar Scholar</h2>
+    <div class="subtitle">Eğitimde blockchain şeffaflığıyla tanışın.</div>
+    
+    <input type="text" id="adres" value="GBVGHDPZNEKII5PQFYWUYLC6QJXFGWGUDQJLUTRDVIFWVISHR42GC6B" readonly style="background: #f9f9f9; color: #888; font-size: 12px;">
+    <input type="number" id="miktar" placeholder="Bağış Miktarı (XLM)" value="10">
+    <input type="text" id="memo" placeholder="Bağış Notu (Örn: Kırtasiye Desteği)">
+    
+    <button onclick="bagisYap()" id="mainBtn">Bağışı Gönder</button>
+    
+    <div id="sonuc" class="status"></div>
+</div>
+
+<script>
+    async function bagisYap() {
+        const adres = document.getElementById('adres').value;
+        const miktar = document.getElementById('miktar').value;
+        const memo = document.getElementById('memo').value;
+        const sonucDiv = document.getElementById('sonuc');
+        const btn = document.getElementById('mainBtn');
+
+        sonucDiv.style.display = "block";
+        sonucDiv.innerHTML = "⌛ İşlem ağa gönderiliyor...";
+        sonucDiv.style.color = "#666";
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/bagis-yap', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ alici: adres, miktar: miktar, memo: memo })
+            });
+
+            const data = await response.json();
+            if(data.success) {
+                sonucDiv.innerHTML = `
+                    <b style="color: var(--success)">✅ BAĞIŞ BAŞARILI!</b><br>
+                    <small>İşlem başarıyla blockchain'e kazındı.</small><br>
+                    <a href="https://stellar.expert/explorer/testnet/tx/${data.hash}" target="_blank" class="explorer-btn">Blockchain'de Görüntüle</a>
+                `;
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            sonucDiv.innerHTML = "❌ Hata: " + error.message;
+            sonucDiv.style.color = "red";
+            btn.disabled = false;
+        }
+    }
+</script>
+
+</body>
+</html>
