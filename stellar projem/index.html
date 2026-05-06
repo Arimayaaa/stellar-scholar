@@ -2,74 +2,163 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Stellar Scholar | Eğitimde Şeffaflık</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Scholar | Soroban Testnet</title>
     <style>
-        :root { --primary: #007bff; --success: #28a745; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 420px; transition: transform 0.3s ease; }
-        .card:hover { transform: translateY(-5px); }
-        h2 { color: #084c61; text-align: center; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #666; font-size: 0.9em; margin-bottom: 25px; }
-        input { width: 100%; padding: 14px; margin: 12px 0; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 15px; transition: border-color 0.3s; }
-        input:focus { border-color: var(--primary); outline: none; }
-        button { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: 600; margin-top: 10px; box-shadow: 0 4px 15px rgba(0,123,255,0.3); }
-        button:active { transform: scale(0.98); }
-        .status { margin-top: 20px; text-align: center; border-radius: 8px; padding: 10px; display: none; }
-        .explorer-btn { display: inline-block; margin-top: 10px; padding: 8px 15px; background: #343a40; color: white; text-decoration: none; border-radius: 5px; font-size: 12px; }
+        :root {
+            --bg: #eef4ff;
+            --card: rgba(255, 255, 255, 0.9);
+            --accent: #0d5c63;
+            --accent-strong: #07393c;
+            --success: #2d936c;
+            --danger: #b42318;
+            --muted: #5f6c7b;
+            --border: rgba(13, 92, 99, 0.12);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(13, 92, 99, 0.18), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(253, 187, 45, 0.16), transparent 28%),
+                linear-gradient(135deg, #f6fbff 0%, #e7f0ff 100%);
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            color: #102a43;
+        }
+        .card {
+            width: min(100%, 520px);
+            background: var(--card);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 24px 60px rgba(7, 57, 60, 0.14);
+        }
+        h1 {
+            margin: 0 0 6px;
+            color: var(--accent-strong);
+            font-size: 2rem;
+            line-height: 1.05;
+        }
+        .subtitle {
+            margin: 0 0 24px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .panel {
+            background: rgba(13, 92, 99, 0.04);
+            border: 1px solid rgba(13, 92, 99, 0.08);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+        .panel strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--accent-strong);
+        }
+        .meta {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 10px 0;
+            border: 1px solid rgba(16, 42, 67, 0.12);
+            border-radius: 14px;
+            font-size: 15px;
+            background: white;
+        }
+        input:focus {
+            outline: 2px solid rgba(13, 92, 99, 0.18);
+            border-color: rgba(13, 92, 99, 0.32);
+        }
+        button {
+            width: 100%;
+            padding: 15px 18px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--accent) 0%, #1d7874 100%);
+            box-shadow: 0 12px 24px rgba(13, 92, 99, 0.24);
+        }
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.68;
+        }
+        .status {
+            margin-top: 18px;
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: none;
+            line-height: 1.5;
+            border: 1px solid transparent;
+        }
+        .status.success {
+            display: block;
+            background: rgba(45, 147, 108, 0.1);
+            border-color: rgba(45, 147, 108, 0.22);
+        }
+        .status.error {
+            display: block;
+            color: var(--danger);
+            background: rgba(180, 35, 24, 0.08);
+            border-color: rgba(180, 35, 24, 0.18);
+        }
+        .status.info {
+            display: block;
+            background: rgba(13, 92, 99, 0.06);
+            border-color: rgba(13, 92, 99, 0.12);
+        }
+        .explorer-btn {
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 8px;
+            padding: 8px 12px;
+            background: #102a43;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        @media (max-width: 600px) {
+            .card { padding: 24px; border-radius: 22px; }
+            h1 { font-size: 1.7rem; }
+        }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>🎓 Stellar Scholar</h2>
-    <div class="subtitle">Eğitimde blockchain şeffaflığıyla tanışın.</div>
-    
-    <input type="text" id="adres" value="GBVGHDPZNEKII5PQFYWUYLC6QJXFGWGUDQJLUTRDVIFWVISHR42GC6B" readonly style="background: #f9f9f9; color: #888; font-size: 12px;">
+    <h1>Stellar Scholar</h1>
+    <p class="subtitle">Bağışı testnet üzerinde gönder, kaydı Soroban kontratına yaz.</p>
+
+    <div class="panel">
+        <strong>Sistem Durumu</strong>
+        <div class="meta" id="sistemDurumu">Yükleniyor...</div>
+    </div>
+
+    <input type="text" id="adres" readonly>
     <input type="number" id="miktar" placeholder="Bağış Miktarı (XLM)" value="10">
-    <input type="text" id="memo" placeholder="Bağış Notu (Örn: Kırtasiye Desteği)">
-    
+    <input type="text" id="memo" placeholder="Bağış Notu (Örn: Kırtasiye desteği)">
+
     <button onclick="bagisYap()" id="mainBtn">Bağışı Gönder</button>
-    
+
     <div id="sonuc" class="status"></div>
 </div>
 
-<script>
-    async function bagisYap() {
-        const adres = document.getElementById('adres').value;
-        const miktar = document.getElementById('miktar').value;
-        const memo = document.getElementById('memo').value;
-        const sonucDiv = document.getElementById('sonuc');
-        const btn = document.getElementById('mainBtn');
-
-        sonucDiv.style.display = "block";
-        sonucDiv.innerHTML = "⌛ İşlem ağa gönderiliyor...";
-        sonucDiv.style.color = "#666";
-        btn.disabled = true;
-
-        try {
-            const response = await fetch('/bagis-yap', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ alici: adres, miktar: miktar, memo: memo })
-            });
-
-            const data = await response.json();
-            if(data.success) {
-                sonucDiv.innerHTML = `
-                    <b style="color: var(--success)">✅ BAĞIŞ BAŞARILI!</b><br>
-                    <small>İşlem başarıyla blockchain'e kazındı.</small><br>
-                    <a href="https://stellar.expert/explorer/testnet/tx/${data.hash}" target="_blank" class="explorer-btn">Blockchain'de Görüntüle</a>
-                `;
-            } else {
-                throw new Error(data.error);
-            }
-        } catch (error) {
-            sonucDiv.innerHTML = "❌ Hata: " + error.message;
-            sonucDiv.style.color = "red";
-            btn.disabled = false;
-        }
-    }
-</script>
+<script src="./index.js"></script>
 
 </body>
 </html>
